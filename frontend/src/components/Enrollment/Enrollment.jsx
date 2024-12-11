@@ -1,7 +1,10 @@
 import React from 'react';
 import { FaBookOpen, FaUserGraduate, FaEnvelopeOpenText, FaMedal } from 'react-icons/fa';
+import { useNavigate } from 'react-router';
 
 const Enrollment = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="container mx-auto py-16 px-6 lg:px-16 bg-gray-900 text-white">
       {/* Top Text Section */}
@@ -47,7 +50,8 @@ const Enrollment = () => {
               Share your knowledge and experience with students around the world. Join our team of expert instructors.
             </p>
           </div>
-          <button className="bg-red-600 text-white py-3 px-8 rounded-full hover:bg-red-500 transition duration-300">
+          <button className="bg-red-600 text-white py-3 px-8 rounded-full hover:bg-red-500 transition duration-300"
+            onClick={() => navigate('/apply-instructor')}>
             Apply Now
           </button>
         </div>
@@ -60,7 +64,8 @@ const Enrollment = () => {
               Start learning today by enrolling in courses that match your interests and career goals.
             </p>
           </div>
-          <button className="bg-red-600 text-white py-3 px-8 rounded-full hover:bg-red-500 transition duration-300">
+          <button className="bg-red-600 text-white py-3 px-8 rounded-full hover:bg-red-500 transition duration-300"
+            onClick={() => navigate('/student-registration') }>
             Enroll Now
           </button>
         </div>

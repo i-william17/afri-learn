@@ -101,7 +101,7 @@ const Courses = () => {
 
       {/* All Courses Button */}
       <div className="text-center mt-10">
-        <a href="#all-courses" className="bg-red-900 hover:bg-gray-900 text-white py-3 px-6 rounded-lg shadow-lg hover:shadow-2xl transition-transform transform hover:scale-105">
+        <a href="/all-courses" className="bg-red-900 hover:bg-gray-900 text-white py-3 px-6 rounded-lg shadow-lg hover:shadow-2xl transition-transform transform hover:scale-105">
           All Our Courses
         </a>
       </div>

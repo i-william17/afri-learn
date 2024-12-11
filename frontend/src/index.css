@@ -12,6 +12,10 @@
   max-width: 1200px;
 }
 
+.navbar{
+  position: fixed;
+}
+
 body {
   margin: 0;
   font-family: "Rethink Sans", sans-serif;
@@ -130,4 +134,8 @@ code {
   animation: slide-right 1.5s ease-in-out;
 }
 
-
+@media (max-width: 800px) { /* Screens smaller than 640px */
+  .code-box {
+    display: none;
+  }
+}

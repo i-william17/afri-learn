@@ -6,7 +6,8 @@ import Navbar from "../../components/Navbar/Navbar";
 import Hero from "../../components/Hero/Hero";
 import Cartegories from '../../components/Cartegories/Cartegories';
 import About from '../../components/About/About';
-import Courses from '../../components/Courses/Courses';
+import CoursesSection from '../Courses/CoursesSections';
+import Pictorial from '../../pages/About/AboutUs/Pictorial';
 import Instructor from '../../components/Instructors/Instructors';
 import NumBoard from '../../components/Instructors/NumBoard';
 import FAQS from '../../components/FAQS/FAQS';
@@ -28,7 +29,7 @@ const HomePage = () => {
       <div data-aos="fade-down">
         <Header />
       </div>
-      <div>
+      <div className='sticky top-0 z-20'>
         <Navbar />
       </div>
       <div data-aos="slide-up">
@@ -41,7 +42,10 @@ const HomePage = () => {
         <About data-aos="fade-up" />
       </div>
       <div >
-        <Courses />
+        <CoursesSection />
+      </div>
+      <div data-aos="fade-up">
+        <Pictorial />
       </div>
       <div data-aos="flip-left">
         <Instructor />

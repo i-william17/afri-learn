@@ -1,8 +1,6 @@
 import React from 'react';
 import { FaBook, FaGraduationCap, FaChalkboardTeacher, FaUniversity, FaArrowRight } from 'react-icons/fa';
-import heroImage from '../../assets/grad3.jpg';
-import secondaryImage from '../../assets/grad1-removebg-preview.png';
-import tertiaryImage from '../../assets/grad2.jpg';
+import heroImage from '../../assets/pixeltrue-idea.svg';
 import backgroundImage from '../../assets/pexels-yankrukov-8199169.jpg';
 
 const UniHero = () => {
@@ -18,7 +16,7 @@ const UniHero = () => {
 
       {/* Main Content */}
       <div className="relative z-10 flex flex-col lg:flex-row items-center max-w-7xl mx-auto px-6 py-20 space-y-10 lg:space-y-0 lg:space-x-12">
-        
+
         {/* Left Section: Text and Button */}
         <div className="lg:w-1/2 space-y-6 text-center lg:text-left">
           <h1 className="relative text-3xl sm:text-4xl lg:text-6xl font-bold leading-tight text-white animate-fadeIn underline underline-offset-4 decoration-pink-500 decoration-4">
@@ -38,37 +36,21 @@ const UniHero = () => {
         </div>
 
         {/* Right Section: Redesigned Hero Images */}
+        {/* Right Section: Redesigned Hero Images */}
         <div className="lg:w-1/2 flex items-center justify-center relative space-x-8">
           {/* Background Gradient for both images */}
-          <div className="absolute w-96 h-96 lg:w-80 lg:h-80 rounded-full bg-gradient-to-br lg:from-blue-600 to-purple-500 opacity-75 lg:animate-pulse animate-none"></div>
+          <div className="absolute w-96 h-96 lg:w-96 lg:h-96"></div>
 
           {/* Primary Image */}
-          <div className="relative p-1 rounded-full bg-gray-800 shadow-lg transform hover:scale-105 transition-transform duration-300 hidden lg:block">
+          <div className="relative p-1 transform hover:scale-105 transition-transform duration-300 hidden lg:block">
             <img
               src={heroImage}
               alt="Primary Student Illustration"
-              className="w-48 h-48 sm:w-64 sm:h-64 lg:w-72 lg:h-72 object-cover rounded-full shadow-xl border-4 border-transparent hover:border-blue-400"
-            />
-          </div>
-
-          {/* Secondary Image with Offset */}
-          <div className="absolute top-8 right-8 p-1 rounded-full bg-gray-900 shadow-lg transform hover:scale-105 transition-transform duration-300 hidden lg:block">
-            <img
-              src={secondaryImage}
-              alt="Secondary Student Illustration"
-              className="w-32 h-32 sm:w-40 sm:h-40 lg:w-48 lg:h-48 object-cover rounded-full shadow-xl opacity-90 hover:opacity-100 border-4 border-transparent hover:border-purple-400"
-            />
-          </div>
-          
-          {/* Tertiary Image */}
-          <div className="mt-48 absolute top-8 right-8 p-1 rounded-full bg-gray-900 shadow-lg transform hover:scale-105 transition-transform duration-300 hidden lg:block">
-            <img
-              src={tertiaryImage}
-              alt="Tertiary Student Illustration"
-              className="w-32 h-32 sm:w-40 sm:h-40 lg:w-48 lg:h-48 object-cover rounded-full shadow-xl opacity-90 hover:opacity-100 border-4 border-transparent hover:border-red-400"
+              className="w-96 h-96 sm:w-80 sm:h-80 lg:w-5/6 lg:h-96 object-cover"
             />
           </div>
         </div>
+
       </div>
 
       {/* Feature Cards Section */}

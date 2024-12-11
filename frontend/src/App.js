@@ -30,6 +30,7 @@ import CourseUploadForm from './pages/Dashboard/AdminDash/CourseUploadForm.jsx';
 import EventUploadForm from './pages/Dashboard/AdminDash/EventUploadForm.jsx';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Details from './pages/Courses/Details.jsx';
 
 const App = () => {
   return (
@@ -41,6 +42,7 @@ const App = () => {
           <Route path="/university" element={<University />} />
           <Route path="/all-courses" element={<AllCourses />} />
           <Route path="/course-details" element={<CourseDetails />} />
+          <Route path="/courses/:id" element={<Details />} />
           <Route path="/course-lesson" element={<CourseLessons />} />
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/about-instructors" element={<AboutIntstructor />} />

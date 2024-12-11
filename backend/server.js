@@ -4,10 +4,13 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const dotenv = require('dotenv');
+const cloudinary = require('cloudinary').v2;
 const courseRoutes = require('./routes/courseRoutes')
 const newsletterRouter = require('./routes/newsletterRoutes');  
 const eventRoutes = require('./routes/eventRoutes');
 const studentRoutes = require('./routes/studentRoutes');
+const instructorRouter = require('./routes/instructorRoutes');
+const blogRoutes = require('./routes/blogRoutes');
 
 dotenv.config();
 require('dotenv').config();
@@ -16,17 +19,24 @@ const app = express();
 const PORT = process.env.PORT;
 const MONGO = process.env.MONGO;
 
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+})
+
 app.use(cors());
 
-app.use(bodyParser.json({ limit: '50mb' }));
-app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
+app.use(bodyParser.json({ limit: '100mb' }));
+app.use(bodyParser.urlencoded({ limit: '100mb', extended: true }));
 app.use(cookieParser());
 
 app.use('/api/newsletter', newsletterRouter);
 app.use('/api/courses', courseRoutes);
 app.use('/api/events', eventRoutes);
 app.use('/api/students', studentRoutes );
-
+app.use('/api/instructors', instructorRouter);
+app.use('/api/blogs', blogRoutes);
 
 mongoose.connect(process.env.MONGO)
   .then(() => console.log('MongoDB connected successfully'))

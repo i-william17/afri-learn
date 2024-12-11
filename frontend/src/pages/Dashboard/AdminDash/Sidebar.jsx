@@ -3,23 +3,30 @@ import PropTypes from 'prop-types';
 import {
   FaBars,
   FaCalendar,
+  FaChalkboardTeacher,
   FaUniversity
 } from 'react-icons/fa';
 import CourseUploadForm from './CourseUploadForm';
 import EventUploadForm from './EventUploadForm';
+import InstructorUpload from './InstructorUpload';
+import BlogUpload from './BlogUpload';
 
 const Sidebar = () => {
   const [activeComponent, setActiveComponent] = useState('Dashboard');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const links = [
-    { label: 'CourseUpload', icon: FaUniversity, component: 'Dashboard' },
-    { label: 'EventUpload', icon: FaCalendar, component: 'EventUpload' },
+    { label: 'Course Upload', icon: FaUniversity, component: 'Dashboard' },
+    { label: 'Event Upload', icon: FaCalendar, component: 'EventUpload' },
+    { label: 'Instructor Upload', icon: FaChalkboardTeacher, component: 'InstructorUpload' },
+    { label: 'Blog Upload', icon: FaChalkboardTeacher, component: 'BlogUpload' },
   ];
 
   const componentsMap = {
     CourseUpload: <CourseUploadForm/>,
-    EventUpload: <EventUploadForm/>
+    EventUpload: <EventUploadForm/>,
+    InstructorUpload: <InstructorUpload/>,
+    BlogUpload: <BlogUpload/>,
   };
 
   return (

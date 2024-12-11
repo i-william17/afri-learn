@@ -49,7 +49,12 @@ module.exports = {
         zoom: 'zoom 8s ease-in-out infinite',
         bounce: 'bounce 2s infinite',
       },
-
+      transition: {
+        duration: 1,
+        ease: 'easeOut',
+        delay: 0.2,
+      },
+      
     },
   },
   plugins: [],

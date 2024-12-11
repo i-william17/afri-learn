@@ -23,6 +23,9 @@ import {
   FaBox,
   FaSignOutAlt
 } from 'react-icons/fa';
+import { useDispatch } from 'react-redux';
+import { logout } from '../../redux/actions/user';
+import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import logo from '../../assets/AFRIBOT Robotics -logo.png';
 
@@ -31,20 +34,39 @@ const Navbar = ({ isLoggedIn, onLogout = {} }) => {
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const { isAuthenticated, user } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const toggleDropdown = (menu) => {
     setActiveDropdown(activeDropdown === menu ? null : menu);
   };
 
+  const handleLogout = () => {
+
+  
+    // Clear any stored authentication tokens or user data
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("userData"); // Replace with the relevant key if different
+  
+    // Dispatch logout action if using Redux
+    dispatch(logout());
+  
+    // Navigate to the login page or home page
+    navigate("/login");
+  
+    console.log("User logged out successfully");
+  };
+
   return (
-    <nav className="bg-black text-white p-4 shadow-lg sticky top-0 z-50">
+    <nav className="bg-black text-white p-4 shadow-lg sticky top-0 z-50 navbar">
       <div className="container mx-auto flex justify-between items-center px-4">
         {/* Logo */}
         <div className="flex items-center space-x-2 animate-fadeInLeft">
           <img
             src={logo}
             alt="Logo"
-            className="h-12 w-40 md:h-14 md:w-60 object-cover transform hover:scale-110 transition-transform duration-300"
+            onClick={() => navigate('/')}
+            className="h-12 w-40 md:h-14 md:w-60 object-cover transform hover:scale-110 transition-transform duration-300 cursor-pointer"
           />
         </div>
 
@@ -196,7 +218,7 @@ const Navbar = ({ isLoggedIn, onLogout = {} }) => {
                   <FaBox className='inline mr-2'/> Orders
                 </Link>
                 <button
-                  onClick={onLogout}
+                  onClick={handleLogout}
                   className="block text-left hover:bg-gray-100 px-4 py-2 transition-colors duration-300 w-full"
                 >
                   <FaSignOutAlt className="inline mr-2"/> Logout

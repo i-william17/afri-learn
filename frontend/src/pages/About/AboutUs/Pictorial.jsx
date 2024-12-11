@@ -1,94 +1,175 @@
-import React, { useEffect, useState } from 'react';
-import 'tailwindcss/tailwind.css';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
-import { gsap } from 'gsap';
-import { FaSearch, FaShareAlt, FaTimes } from 'react-icons/fa';
-import img1 from '../../../assets/pexels-max-fischer-5212320.jpg';
-import img2 from '../../../assets/pexels-max-fischer-5212320.jpg';
-import img3 from '../../../assets/pexels-max-fischer-5212320.jpg';
-import img4 from '../../../assets/pexels-max-fischer-5212320.jpg';
-import img5 from '../../../assets/pexels-max-fischer-5212320.jpg';
+import React, { useState } from 'react';
+import { motion } from 'framer-motion';
+import img1 from '../../../assets/img1.jpg';
+import img2 from '../../../assets/img3.jpg';
+import img3 from '../../../assets/img9.jpg';
+import img4 from '../../../assets/img4.jpg';
+import img5 from '../../../assets/img5.jpg';
+import img6 from '../../../assets/img6.jpg';
+import img7 from '../../../assets/img7.jpg';
+import img8 from '../../../assets/img2.jpg';
+import img9 from '../../../assets/img8.jpg';
+import img10 from '../../../assets/img10.jpg';
+import img11 from '../../../assets/image1.jpg';
+import vid1 from '../../../assets/vid1.mp4';
+import vid2 from '../../../assets/vid2.mp4';
 
+const media = [
+  { id: 1, type: 'image', src: img2, alt: 'Photo 1' },
+  { id: 2, type: 'video', src: vid1, alt: 'Video 1' },
+  { id: 3, type: 'image', src: img1, alt: 'Photo 2' },
+  { id: 4, type: 'video', src: vid2, alt: 'Video 2' },
+  { id: 5, type: 'image', src: img3, alt: 'Photo 3' },
+  { id: 6, type: 'image', src: img5, alt: 'Photo 4' },
+  { id: 7, type: 'image', src: img4, alt: 'Photo 5' },
+  { id: 8, type: 'image', src: img6, alt: 'Photo 6' },
+  { id: 9, type: 'image', src: img10, alt: 'Photo 7' },
+  { id: 10, type: 'image', src: img7, alt: 'Photo 8' },
+  { id: 11, type: 'image', src: img8, alt: 'Photo 9' },
+  { id: 13, type: 'image', src: img9, alt: 'Photo 10' },
+  { id: 14, type: 'image', src: img11, alt: 'Photo 11' },
+];
 
 const Pictorial = () => {
-  const [modalOpen, setModalOpen] = useState(false);
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedMedia, setSelectedMedia] = useState(null);
 
-  useEffect(() => {
-    AOS.init({
-      duration: 1200,
-      easing: 'ease-in-out-cubic',
-      once: true,
-    });
+  const handleMediaClick = (mediaItem) => {
+    setSelectedMedia(mediaItem);
+  };
 
-    gsap.from(".image-card", {
+  const closeLightbox = () => {
+    setSelectedMedia(null);
+  };
+
+  const generateVariants = (index) => ({
+    hidden: {
       opacity: 0,
-      scale: 0.9,
-      duration: 1,
-      stagger: 0.2,
-    });
-  }, []);
-
-  const images = [
-    { src: img1, alt: 'Landscape 1', text: 'Scene 1', description: 'An amazing view of nature.' },
-    { src: img2, alt: 'Landscape 2', text: 'Scene 2', description: 'A tranquil lakeside sunset.' },
-    { src: img3, alt: 'Portrait 3', text: 'Scene 3', description: 'A beautiful mountain range at dawn.' },
-    { src: img4, alt: 'Wide 4', text: 'Scene 4', description: 'A majestic city skyline at night.' },
-    { src: img5, alt: 'Tall 5', text: 'Scene 5', description: 'A stunning tropical rainforest.' },
-  ];
-
-  const openModal = (image) => {
-    setSelectedImage(image);
-    setModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setModalOpen(false);
-    setSelectedImage(null);
-  };
+      scale: 0.8,
+      x: index % 2 === 0 ? -150 : 150,
+      y: index % 3 === 0 ? -100 : 100,
+    },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      x: 0,
+      y: 0,
+      transition: {
+        duration: 1,
+        ease: 'easeOut',
+        delay: index * 0.2,
+      },
+    },
+  });
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-r from-gray-900 via-black to-gray-800 p-4 md:p-8">
-      {/* Image Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
-        {images.map((image, index) => (
-          <div
-            key={index}
-            className="image-card relative overflow-hidden rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-500 cursor-pointer group"
-            onClick={() => openModal(image)}
-          >
-            <img
-              src={image.src}
-              alt={image.alt}
-              className="w-full h-48 md:h-80 object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black opacity-0 group-hover:opacity-90 transition-opacity duration-500">
-              <div className="flex justify-between p-2 md:p-4">
-                <FaSearch className="text-white text-lg md:text-2xl opacity-75 hover:opacity-100" />
-                <FaShareAlt className="text-gray-300 text-lg md:text-2xl opacity-75 hover:opacity-100" />
-              </div>
-              <p className="absolute bottom-2 left-2 text-white text-sm md:text-md font-semibold">{image.text}</p>
-            </div>
-          </div>
-        ))}
+    <div className="py-8 bg-gradient-to-b from-gray-300 via-white to-gray-100 min-h-screen">
+      {/* Section Header */}
+      <motion.div
+        className="text-center mb-8"
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1 }}
+      >
+        <h2 className="text-4xl font-extrabold text-gray-800">
+          <span className="text-red-600">Pictor</span>ials
+        </h2>
+        <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
+          Take a look at what we do.
+        </p>
+      </motion.div>
+
+      {/* Dynamic Grid of Photos and Videos */}
+      <div className="relative grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 px-4 md:px-8">
+        {media.map((item, index) => {
+          // Dynamically adjust grid item size and placement
+          const spanClasses =
+            index % 10 === 0
+              ? 'lg:col-span-3 lg:row-span-2'
+              : index % 7 === 0
+                ? 'lg:col-span-2 lg:row-span-2'
+                : index % 5 === 0
+                  ? 'lg:col-span-2'
+                  : '';
+
+          return (
+            <motion.div
+              key={item.id}
+              className={`relative overflow-hidden rounded-xl shadow-lg transform hover:scale-105 transition-transform duration-500 ease-in-out cursor-pointer ${spanClasses}`}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={generateVariants(index)}
+              onClick={() => handleMediaClick(item)}
+            >
+              {item.type === 'image' ? (
+                <motion.img
+                  src={item.src}
+                  alt={item.alt}
+                  className="w-full h-full object-cover hover:brightness-90 rounded-xl"
+                  loading="lazy"
+                  aria-label={`Image of ${item.alt}`}
+                />
+              ) : (
+                <div className="relative">
+                  <motion.video
+                    src={item.src}
+                    className="w-full h-full object-cover hover:brightness-90 rounded-xl"
+                    muted
+                    loop
+                    autoPlay
+                    aria-label={`Video of ${item.alt}`}
+                  />
+                  {/* Video Icon */}
+                  <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40">
+                    <span className="text-white text-5xl font-bold">▶</span>
+                  </div>
+                </div>
+              )}
+            </motion.div>
+          );
+        })}
       </div>
 
-      {/* Modal */}
-      {modalOpen && selectedImage && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75 z-50 p-4">
-          <div className="relative bg-gray-800 text-white rounded-lg shadow-2xl w-full max-w-lg p-4 md:p-6">
-            <FaTimes
-              className="absolute top-2 right-2 text-2xl text-red-500 cursor-pointer hover:text-white"
-              onClick={closeModal}
-            />
-            <img
-              src={selectedImage.src}
-              alt={selectedImage.alt}
-              className="w-full h-auto rounded-lg mb-4"
-            />
-            <h2 className="text-lg md:text-xl font-bold mb-2">{selectedImage.text}</h2>
-            <p className="text-gray-300">{selectedImage.description}</p>
+      {/* Modal for Full-Screen View */}
+      {selectedMedia && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80 backdrop-blur-md"
+          role="dialog"
+          aria-modal="true"
+        >
+          <div className="relative max-w-4xl w-full p-4">
+            {/* Close Button */}
+            <button
+              className="absolute top-4 right-4 text-white text-3xl font-bold bg-black bg-opacity-50 rounded-full p-2 hover:bg-opacity-80 transition"
+              onClick={closeLightbox}
+              aria-label="Close Modal"
+            >
+              ✕
+            </button>
+
+            {/* Media Content */}
+            <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+              {selectedMedia.type === 'image' ? (
+                <motion.img
+                  src={selectedMedia.src}
+                  alt={selectedMedia.alt}
+                  className="w-full h-auto object-cover rounded-lg"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5 }}
+                />
+              ) : (
+                <motion.video
+                  src={selectedMedia.src}
+                  className="w-full h-auto rounded-lg"
+                  controls
+                  autoPlay
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5 }}
+                />
+              )}
+            </div>
           </div>
         </div>
       )}

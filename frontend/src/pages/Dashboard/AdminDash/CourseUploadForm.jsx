@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Upload, Paperclip, DollarSign, Users, Book, User, Layout, Settings, Tag } from 'lucide-react';
 import axios from 'axios';
 import { FaSave } from 'react-icons/fa'
-import { toast } from 'react-toastify';
 import endpoint from '../../../endpoint';
 
 const CourseUpload = () => {
@@ -42,7 +41,13 @@ const CourseUpload = () => {
     sections: [
       {
         title: '',
-        lessons: [{ title: '', type: 'video', content: '', videoFile: null, videoName: '' }],
+        lessons: [{
+          title: '',
+          type: 'video',
+          content: '',
+          videoFile: null,
+          videoName: ''
+        }],
       },
     ],
     settings: {
@@ -64,19 +69,23 @@ const CourseUpload = () => {
     },
     status: 'Draft',
   });
-  
+
 
   // Preview states
   const [thumbnailPreview, setThumbnailPreview] = useState(null);
   const [introVideoName, setIntroVideoName] = useState('');
   const [materialsList, setMaterialsList] = useState([]);
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const MAX_IMAGE_SIZE = 5 * 1024 * 1024; // 2MB
+  const MAX_VIDEO_SIZE = 100 * 1024 * 1024; // 50MB
 
   // Handle video upload for lessons
   const handleLessonVideoChange = async (sectionIndex, lessonIndex, e) => {
     const file = e.target.files[0];
     if (file) {
       if (file.size > 100 * 1024 * 1024) {
-        toast.error('Video size should be less than 100MB');
+        setErrorMessage('Video size should be less than 100MB');
         return;
       }
 
@@ -87,7 +96,7 @@ const CourseUpload = () => {
         newSections[sectionIndex].lessons[lessonIndex].videoName = file.name;
         setSections(newSections);
       } catch (error) {
-        toast.error('Error processing video');
+        setErrorMessage('Error processing video');
         console.error('Error converting video:', error);
       }
     }
@@ -99,7 +108,7 @@ const CourseUpload = () => {
     newSections[sectionIndex][field] = value;
     setSections(newSections);
   };
-  
+
 
   // Handle regular input changes
   const handleChange = (e) => {
@@ -129,7 +138,7 @@ const CourseUpload = () => {
     const file = e.target.files[0];
     if (file) {
       if (file.size > 5 * 1024 * 1024) {
-        toast.error('Image size should be less than 5MB');
+        setErrorMessage('Image size should be less than 5MB');
         return;
       }
 
@@ -141,7 +150,7 @@ const CourseUpload = () => {
         }));
         setThumbnailPreview(URL.createObjectURL(file));
       } catch (error) {
-        toast.error('Error processing image');
+        setErrorMessage('Error processing image');
         console.error('Error converting image:', error);
       }
     }
@@ -152,7 +161,7 @@ const CourseUpload = () => {
     const file = e.target.files[0];
     if (file) {
       if (file.size > 100 * 1024 * 1024) {
-        toast.error('Video size should be less than 100MB');
+        setErrorMessage('Video size should be less than 100MB');
         return;
       }
 
@@ -164,7 +173,7 @@ const CourseUpload = () => {
         }));
         setIntroVideoName(file.name);
       } catch (error) {
-        toast.error('Error processing video');
+        setErrorMessage('Error processing video');
         console.error('Error converting video:', error);
       }
     }
@@ -176,7 +185,7 @@ const CourseUpload = () => {
     const totalSize = files.reduce((acc, file) => acc + file.size, 0);
 
     if (totalSize > 50 * 1024 * 1024) {
-      toast.error('Total materials size should be less than 50MB');
+      setErrorMessage('Total materials size should be less than 50MB');
       return;
     }
 
@@ -194,7 +203,7 @@ const CourseUpload = () => {
       }));
       setMaterialsList(prev => [...prev, ...files.map(file => file.name)]);
     } catch (error) {
-      toast.error('Error processing materials');
+      setErrorMessage('Error processing materials');
       console.error('Error converting materials:', error);
     }
   };
@@ -218,68 +227,57 @@ const CourseUpload = () => {
 
   // Add new section
   // Add new section
-const addSection = () => {
-  const newSection = {
-    title: '',
-    lessons: [{ title: '', type: 'video', content: '', videoFile: null, videoName: '' }],
+  const addSection = () => {
+    const newSection = {
+      title: '',
+      lessons: [{ title: '', type: 'video', content: '', videoFile: null, videoName: '' }],
+    };
+
+    setFormData((prevData) => ({
+      ...prevData,
+      sections: [...prevData.sections, newSection],
+    }));
   };
 
-  setFormData((prevData) => ({
-    ...prevData,
-    sections: [...prevData.sections, newSection],
-  }));
-};
+  const addLesson = (sectionIndex) => {
+    const newSections = [...formData.sections];
+    newSections[sectionIndex].lessons.push({ title: '', type: 'video', content: '', videoFile: null, videoName: '' });
 
-const addLesson = (sectionIndex) => {
-  const newSections = [...formData.sections];
-  newSections[sectionIndex].lessons.push({ title: '', type: 'video', content: '', videoFile: null, videoName: '' });
-
-  setFormData((prevData) => ({
-    ...prevData,
-    sections: newSections,
-  }));
-};
-
-const Spinner = () => (
-  <div className="inline-block w-4 h-4 border-2 border-t-2 border-gray-600 border-t-transparent rounded-full animate-spin"></div>
-);
-
-const StatusMessage = ({ message, type }) => {
-  if (!message) return null;
-
-  const statusStyles = type === 'success'
-    ? 'bg-green-100 border-green-400 text-green-700'
-    : type === 'error'
-      ? 'bg-red-100 border-red-400 text-red-700'
-      : 'bg-blue-100 border-blue-400 text-blue-700'; // For loading
-
-  return (
-    <div className={`p-4 border rounded-md ${statusStyles} mb-4 flex items-center gap-2`}>
-      {type === 'info' && <Spinner />} {/* Show spinner when type is 'info' */}
-      <span>{message}</span>
-    </div>
-  );
-};
-
+    setFormData((prevData) => ({
+      ...prevData,
+      sections: newSections,
+    }));
+  };
 
   // Handle form submission
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (req,res,event) => {
     event.preventDefault();
-  
+
     // Combine all data
     const submitData = {
       ...formData,
-      sections: sections
+      sections: sections,
     };
-  
+
+      // Validate file sizes
+  if (formData.thumbnailImage && formData.thumbnailImage.size > MAX_IMAGE_SIZE) {
+    setErrorMessage('Thumbnail image is too large. Max size: 2MB');
+    return;
+  }
+
+  if (formData.introductionVideo && formData.introductionVideo.size > MAX_VIDEO_SIZE) {
+    setErrorMessage('Introduction video is too large. Max size: 50MB');
+    return;
+  }
+
     try {
       setSubmitStatus({ message: 'Submitting...', type: 'info' });
-  
+
       const response = await axios.post(`${endpoint}/api/courses`, submitData);
-  
+
       if (response.status === 200) {
-        toast.success('Course created successfully!');
-        
+        setSuccessMessage('Course created successfully!');
+
         // Reset form
         setFormData({
           title: '',
@@ -325,24 +323,24 @@ const StatusMessage = ({ message, type }) => {
         setThumbnailPreview(null);
         setIntroVideoName('');
         setMaterialsList([]);
-  
+
         // Update status to success
-        setSubmitStatus({ message: 'Course successfully uploaded!', type: 'success' });
-        
+        setSubmitStatus(response.status === 201 && { message: 'Course successfully uploaded!', type: 'success' });
+
         // Automatically clear the status message after 3 seconds
         setTimeout(() => {
           setSubmitStatus({ message: '', type: '' });
         }, 3000);
       }
     } catch (error) {
-      toast.error('Error creating course. Please try again.');
+      setErrorMessage('Error creating course. Please try again.');
       console.log('Error:', error);
       setSubmitStatus({
         message: 'Error uploading course. Please try again.',
         type: 'error' // Set type to 'error' for consistency
       });
     }
-    console.log('Form Data:', formData);
+    console.log('Form Data:', submitData);
   };
 
   // Handle material removal
@@ -418,6 +416,8 @@ const StatusMessage = ({ message, type }) => {
                     <option>Development</option>
                     <option>Business</option>
                     <option>Design</option>
+                    <option>Marketing</option>
+                    <option>Robotics</option>
                   </select>
                 </div>
               </div>
@@ -835,6 +835,7 @@ const StatusMessage = ({ message, type }) => {
           </div>
 
 
+
           {/* Additional Settings */}
           <div className={activeTab === 'settings' ? 'block' : 'hidden'}>
             <div className="flex items-center gap-2 text-lg font-semibold text-gray-700 mb-4">
@@ -851,9 +852,9 @@ const StatusMessage = ({ message, type }) => {
                   onChange={handleChange}
                   required
                 >
-                  <option value="none">No Certificate</option>
-                  <option value="completion">Completion Certificate</option>
-                  <option value="graded">Graded Certificate</option>
+                  <option value="No Certificate">No Certificate</option>
+                  <option value="Completion Certificate">Completion Certificate</option>
+                  <option value="Graded Certificate">Graded Certificate</option>
                 </select>
               </div>
               <div>
@@ -978,10 +979,10 @@ const StatusMessage = ({ message, type }) => {
                   onChange={handleChange}
                   required
                 >
-                  <option value="en">English</option>
-                  <option value="sw">Swahili</option>
-                  <option value="es">Spanish</option>
-                  <option value="fr">French</option>
+                  <option value="English">English</option>
+                  <option value="Swahili">Swahili</option>
+                  <option value="Spanish">Spanish</option>
+                  <option value="French">French</option>
                 </select>
               </div>
               <div>
@@ -993,16 +994,17 @@ const StatusMessage = ({ message, type }) => {
                   onChange={handleChange}
                   required
                 >
-                  <option value="beginner">Beginner</option>
-                  <option value="intermediate">Intermediate</option>
-                  <option value="advanced">Advanced</option>
+                  <option value="Beginner">Beginner</option>
+                  <option value="Intermediate">Intermediate</option>
+                  <option value="Advanced">Advanced</option>
                 </select>
               </div>
             </div>
           </div>
 
           {/* Submit Status Message */}
-          <StatusMessage message={submitStatus.message} type={submitStatus.type} />
+          {successMessage && <p className="text-green-500 text-center mb-4">{successMessage}</p>}
+          {errorMessage && <p className="text-red-500 text-center mb-4">{errorMessage}</p>}
 
           {/* Save/Cancel Buttons */}
           <div className="mt-6 flex items-center justify-end gap-4">

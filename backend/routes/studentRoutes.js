@@ -1,6 +1,6 @@
 const express = require('express');
 const studentRoutes = express.Router();
-const { registerStudent, studentLogin, getStudents } = require('../controllers/studentController');
+const { registerStudent, studentLogin, getStudents, logout } = require('../controllers/studentController');
 const multer = require('multer');
 
 // Multer configuration for file upload
@@ -17,6 +17,7 @@ const upload = multer({ storage });
 // Route for user registration
 studentRoutes.post('/signup', upload.single('profileImage'), registerStudent);
 studentRoutes.post('/login', studentLogin);
+studentRoutes.get('/logout', logout);
 studentRoutes.get('/', getStudents);
 
 
